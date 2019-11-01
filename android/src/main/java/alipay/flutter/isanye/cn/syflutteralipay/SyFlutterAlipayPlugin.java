@@ -59,10 +59,24 @@ public class SyFlutterAlipayPlugin implements MethodCallHandler {
         try {
           PayTask alipay = new PayTask(activity);
           Map<String, String> result = alipay.payV2(payInfo, true);
-
-          callback.success(result);
+          activity.runOnUiThread(
+            new Runnable(){
+               public void run(){
+                   callback.success(result);
+               }
+            }
+          );
+          //callback.success(result);
         } catch (Exception e) {
-          callback.error("PAY_ERROR",e.getMessage(),null);
+          
+            activity.runOnUiThread(
+            new Runnable(){
+               public void run(){
+                   callback.error("PAY_ERROR",e.getMessage(),null);
+               }
+            }
+          );
+
         }
       }
     };
